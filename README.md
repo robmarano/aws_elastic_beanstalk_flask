@@ -89,3 +89,18 @@ Thanks to Miguel Grinberg for sharing his insights on how to combine ReactJS wit
 * [How to Deploy a React + Flask Project](https://blog.miguelgrinberg.com/post/how-to-deploy-a-react--flask-project)
 
 
+## 10
+Adding user login with Amazon Cognito and AWS Amplify.
+Instead of reinventing the wheel, I'm following [Agnita: Authentication for Create React App using AWS Cognito](https://levelup.gitconnected.com/agnita-authentication-for-create-react-app-using-aws-cognito-80cde1fb781b). The Agnita GitHub repo is located [here](https://github.com/bartw/agnita).
+
+Follow the instructions to set up Amazon Cognito. Note the AWS Region, User Pool ID and App Client ID of Cognito in your React app
+
+Add AWS Amplify
+```bash
+npm install --save aws-amplify
+```
+
+## 11
+
+
+

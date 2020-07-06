@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useInterval from './useInterval';
 import react_logo from './react-logo.svg';
 import flask_logo from './flask-logo.svg';
+import Amplify from "aws-amplify";
+import SignUp from './SignUp';
+import SignIn from './SignIn';
 import './App.css';
 
 function getRandomColor() {
@@ -24,6 +27,17 @@ function getRandomColor() {
 // }
 
 function App() {
+  useEffect(() => {
+    Amplify.configure({
+      Auth: {
+        region: process.env.REACT_APP_REGION,
+        userPoolId: process.env.REACT_APP_USER_POOL_ID,
+        userPoolWebClientId: process.env.REACT_APP_USER_POOL_WEB_CLIENT_ID,
+      },
+    });
+  });
+
+
   const [currentTime, setCurrentTime] = useState('01/01/1970, 00:00:00');
   const [currentRandomNumber, setCurrentRandomNumber] = useState('-1');
   const [currentRandomString, setCurrentRandomString] = useState('<null>');
@@ -34,57 +48,57 @@ function App() {
   const quoteDelay = 3000; // in milliseconds
 
   App.refreshQuote = () => {
-    console.log("Refreshing ... quote ...");
+    // console.log("Refreshing ... quote ...");
     fetch('/random/quote')
       .then(response => response.json())
       .then(data => {
         setQuoteText(data.random_quote);
         setQuoteAuthor(data.quote_author);
-        console.log(data);
+        // console.log(data);
     });
-    console.log("Refreshed quote.");  
+    // console.log("Refreshed quote.");  
   }
   useInterval(() => {
     App.refreshQuote();
   }, quoteDelay);
 
   App.refreshTime = () => {
-    console.log("Refreshing ... time ...");
+    // console.log("Refreshing ... time ...");
     fetch('/api/time')
       .then(response => response.json())
       .then(data => {
         setCurrentTime(data.datetime);
-        console.log(data);
+        // console.log(data);
     });
-    console.log("Refreshed time.");  
+    // console.log("Refreshed time.");  
   }
   useInterval(() => {
     App.refreshTime();
   }, delay);
 
   App.refreshRandomNumber = () => {
-    console.log("Refreshing ... random number ...");
+    // console.log("Refreshing ... random number ...");
     fetch('/random/number')
       .then(response => response.json())
       .then(data => {
         setCurrentRandomNumber(data.random_number);
-        console.log(data);
+        // console.log(data);
     });
-    console.log("Refreshed random number.");  
+    // console.log("Refreshed random number.");  
   }
   useInterval(() => {
     App.refreshRandomNumber();
   }, delay);
 
   App.refreshRandomString = () => {
-    console.log("Refreshing ... random string ...");
+    // console.log("Refreshing ... random string ...");
     fetch('/random/string')
       .then(response => response.json())
       .then(data => {
         setCurrentRandomString(data.random_string);
-        console.log(data);
+        // console.log(data);
     });
-    console.log("Refreshed random string.");  
+    // console.log("Refreshed random string.");  
   }
   useInterval(() => {
     App.refreshRandomString();
@@ -111,6 +125,7 @@ function App() {
         >
           Learn how to spin React with Python Flask
         </a>
+        <h1>Server Mode = {process.env.NODE_ENV}</h1>
         <button className="button" onClick={App.buttonClicked}>Click to Refresh</button>
         <p>The current time is</p>
         <div style={{background: `${getRandomColor()}`}}>
@@ -136,6 +151,8 @@ function App() {
         <p></p>
         <p></p>
       </header>
+      <SignUp />
+      <SignIn />
     </div>
   );
 }
