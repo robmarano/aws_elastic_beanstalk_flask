@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
 import useInterval from './useInterval';
+
+import TwitterLogin from 'react-twitter-auth';
+import FacebookLogin from 'react-facebook-login';
+import { GoogleLogin } from 'react-google-login';
+
+
+import Authenticated from './Authenticated';
+
 import react_logo from './react-logo.svg';
 import flask_logo from './flask-logo.svg';
 import './App.css';
@@ -29,6 +37,28 @@ function App() {
   const [currentRandomString, setCurrentRandomString] = useState('<null>');
   const [quoteText, setQuoteText] = useState('To be or not to be.');
   const [quoteAuthor, setQuoteAuthor] = useState('William Shakespeare');
+
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState('');
+
+  App.logout = () => {
+    setIsAuthenticated(false);
+    setUser(null);
+    setToken('');
+  };
+
+  App.twitterResponse = (e) => {};
+
+  App.facebookResponse = (e) => {};
+
+  App.googleResponse = (e) => {};
+
+  App.onFailure = (error) => {
+    alert(error);
+  }
+
+
 
   const delay = 5000; // in milliseconds
   const quoteDelay = 3000; // in milliseconds
@@ -100,6 +130,7 @@ function App() {
 
   return (
     <div className="App">
+      <Authenticated />
       <header className="App-header">
         <img src={react_logo} className="App-logo" alt="react-logo" />
         <img src={flask_logo} className="App-logo" alt="flask-logo" />

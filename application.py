@@ -1,17 +1,26 @@
 from flask import Flask
+from flask import url_for, request, session, redirect
+
 import logging
 from datetime import datetime
 from random import randint
 import requests
 import json
 from pprint import pprint
+import os
 
 application = Flask(__name__, static_folder='simple-react/build', static_url_path='/')
 
 # set a 'SECRET_KEY' to enable the Flask session cookies
 application.secret_key = 'random development key'
 
-# Routes
+FACEBOOK_APP_ID = os.getenv("FACEBOOK_APP_ID")
+FACEBOOK_APP_SECRET = os.getenv("FACEBOOK_APP_SECRET")
+
+@application.route('/api/v1/auth/facebook')
+def auth_facebook():
+    return application.send_static_file('index.html')
+
 @application.route('/api/time')
 def get_current_time():
     now = datetime.now() # current date and time
@@ -46,7 +55,7 @@ def generate_random_quote():
     #return {'random_quote': quote, 'quote_author': author}
     position=randint(0,len(quotes)-1)
     random_quote = quotes[position]
-    print(random_quote)
+    #print(random_quote)
     #quote=random_quote['random_quote']
     #author=random_quote['quote_author']
     return random_quote
