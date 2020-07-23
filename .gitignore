@@ -1,6 +1,10 @@
 # My Scratch notes
 SCRATCH.txt
 
+# Sublime-Text files
+*.sublime-project
+*.sublime-workspace
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
