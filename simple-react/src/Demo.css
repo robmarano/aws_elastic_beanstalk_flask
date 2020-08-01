@@ -1,19 +1,19 @@
-.App {
+.Demo {
   text-align: center;
 }
 
-.App-logo {
+.Demo-logo {
   height: 20vmin;
   pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
+  .Demo-logo {
     animation: Demo-logo-spin infinite 20s linear;
   }
 }
 
-.App-header {
+.Demo-header {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -24,7 +24,7 @@
   color: white;
 }
 
-.App-link {
+.Demo-link {
   color: #61dafb;
 }
 
@@ -75,7 +75,7 @@ a.button:hover{
     content: '\201D';
 }
 
-@keyframes App-logo-spin {
+@keyframes Demo-logo-spin {
   from {
     transform: rotate(0deg);
   }

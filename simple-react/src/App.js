@@ -1,143 +1,77 @@
-import React, { useState } from 'react';
-import useInterval from './useInterval';
-import react_logo from './react-logo.svg';
-import flask_logo from './flask-logo.svg';
+import React, { useState, useEffect } from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  // useRouteMatch,
+  // useParams
+} from "react-router-dom";
+import Demo from './Demo';
+import Timeline from './Timeline';
 import './App.css';
 
-function getRandomColor() {
-  let colorValues = ["red", "blue", "green"];
-  return colorValues[Math.floor(Math.random() * colorValues.length)];
-}
-
-// function buttonClicked() {
-//   console.log('Button was clicked!')
-//   let s;
-//   fetch('/random/quote')
-//     .then(response => response.json())
-//     .then(data => {
-//       s = {quoteText: data.random_quote, quoteAuthor: data.quote_author};
-//       // this.setState({ quoteText: data.random_quote });
-//       // this.setState({ quoteAuthor: data.quote_author });
-//       console.log(data);
-//     });
-//   return(s);
-// }
-
 function App() {
-  const [currentTime, setCurrentTime] = useState('01/01/1970, 00:00:00');
-  const [currentRandomNumber, setCurrentRandomNumber] = useState('-1');
-  const [currentRandomString, setCurrentRandomString] = useState('<null>');
-  const [quoteText, setQuoteText] = useState('To be or not to be.');
-  const [quoteAuthor, setQuoteAuthor] = useState('William Shakespeare');
+  const [items, setItems] = useState([
+    {
+      name: 'Step 1',
+      active: false,
+    },
+    {
+      name: 'Step 2',
+      active: false,
+    },
+    {
+      name: 'Step 3',
+      active: false,
+    },
+    {
+      name: 'Step 4',
+      active: false,
+    },
+    {
+      name: 'Step 5',
+      active: false,
+    }
+  ]);
 
-  const delay = 5000; // in milliseconds
-  const quoteDelay = 3000; // in milliseconds
-
-  App.refreshQuote = () => {
-    console.log("Refreshing ... quote ...");
-    fetch('/random/quote')
-      .then(response => response.json())
-      .then(data => {
-        setQuoteText(data.random_quote);
-        setQuoteAuthor(data.quote_author);
-        console.log(data);
-    });
-    console.log("Refreshed quote.");  
-  }
-  useInterval(() => {
-    App.refreshQuote();
-  }, quoteDelay);
-
-  App.refreshTime = () => {
-    console.log("Refreshing ... time ...");
-    fetch('/api/time')
-      .then(response => response.json())
-      .then(data => {
-        setCurrentTime(data.datetime);
-        console.log(data);
-    });
-    console.log("Refreshed time.");  
-  }
-  useInterval(() => {
-    App.refreshTime();
-  }, delay);
-
-  App.refreshRandomNumber = () => {
-    console.log("Refreshing ... random number ...");
-    fetch('/random/number')
-      .then(response => response.json())
-      .then(data => {
-        setCurrentRandomNumber(data.random_number);
-        console.log(data);
-    });
-    console.log("Refreshed random number.");  
-  }
-  useInterval(() => {
-    App.refreshRandomNumber();
-  }, delay);
-
-  App.refreshRandomString = () => {
-    console.log("Refreshing ... random string ...");
-    fetch('/random/string')
-      .then(response => response.json())
-      .then(data => {
-        setCurrentRandomString(data.random_string);
-        console.log(data);
-    });
-    console.log("Refreshed random string.");  
-  }
-  useInterval(() => {
-    App.refreshRandomString();
-  }, delay);
-
-  App.buttonClicked = () => {
-    console.log('Button was clicked!');
-    App.refreshTime();
-    App.refreshRandomNumber();
-    App.refreshRandomString();
-    App.refreshQuote();
-  }
+  useEffect(() => {
+    // console.log(`items = ${JSON.stringify(items, null, 2)}`);
+  });
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={react_logo} className="App-logo" alt="react-logo" />
-        <img src={flask_logo} className="App-logo" alt="flask-logo" />
-        <a
-          className="App-link"
-          href="https://github.com/robmarano/aws_elastic_beanstalk_flask"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn how to spin React with Python Flask
-        </a>
-        <button className="button" onClick={App.buttonClicked}>Click to Refresh</button>
-        <p>The current time is</p>
-        <div style={{background: `${getRandomColor()}`}}>
-          {currentTime}
-        </div>
-        <p>The current random number is</p>
-        <div style={{background: `${getRandomColor()}`}}>
-          {currentRandomNumber}
-        </div>
-        <p>The current random string is</p>
-        <div style={{background: `${getRandomColor()}`}}>
-          {currentRandomString}
-        </div>
-        <p>The current quote is</p>
-        <div>
-          <blockquote>
-          <p>{quoteText}</p>
-          <footer>— <cite>{quoteAuthor}</cite>
-          </footer>
-          </blockquote>
-        </div>
-        <p></p>
-        <p></p>
-        <p></p>
-      </header>
+    <div>
+      <Router>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/demo">Original Demo</Link>
+            </li>
+            <li>
+              <Link to="/timeline">Timeline Demo</Link>
+            </li>
+          </ul>
+        </nav>
+
+        {/* A <Switch> looks through its children <Route>s and
+            renders the first one that matches the current URL. */}
+        <Switch>
+          <Route path="/" component={Home} exact />
+          <Route path="/demo" component={Demo} exact />
+          <Route path="/timeline">
+            <Timeline items={items} setItems={setItems} />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
+}
+
+function Home() {
+  return <h2>Home</h2>;
 }
 
 export default App;
